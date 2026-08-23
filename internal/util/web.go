@@ -2,6 +2,7 @@ package util
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -67,8 +68,8 @@ func Page(c *gin.Context, data any, page, pageSize int, total int64) {
 }
 
 func Fail(c *gin.Context, err error) {
-	appErr, ok := err.(*AppError)
-	if !ok {
+	var appErr *AppError
+	if !errors.As(err, &appErr) {
 		appErr = Internal(err)
 	}
 	payload := gin.H{"code": appErr.Code, "message": appErr.Message}

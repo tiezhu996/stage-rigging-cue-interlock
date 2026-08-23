@@ -36,7 +36,7 @@ func (h *CueDefinitionHandler) Get(c *gin.Context) {
 	}
 	item, err := h.service.Get(id)
 	if err != nil {
-		util.Fail(c, fmt.Errorf("load cue: %v", err))
+		util.Fail(c, fmt.Errorf("load cue: %w", err))
 		return
 	}
 	util.OK(c, item)
@@ -50,7 +50,7 @@ func (h *CueDefinitionHandler) Create(c *gin.Context) {
 	}
 	item, err := h.service.Create(request, audit.ActorFromContext(c))
 	if err != nil {
-		util.Fail(c, fmt.Errorf("create cue: %v", err))
+		util.Fail(c, fmt.Errorf("create cue: %w", err))
 		return
 	}
 	util.Created(c, item)
@@ -69,7 +69,7 @@ func (h *CueDefinitionHandler) Update(c *gin.Context) {
 	}
 	item, err := h.service.Update(id, request, audit.ActorFromContext(c))
 	if err != nil {
-		util.Fail(c, fmt.Errorf("update cue: %v", err))
+		util.Fail(c, fmt.Errorf("update cue: %w", err))
 		return
 	}
 	util.OK(c, item)
