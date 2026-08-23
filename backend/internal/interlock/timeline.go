@@ -133,6 +133,12 @@ func DetectCollisionWindows(events []TimelineEvent) []CollisionWindow {
 			if left.DeviceID == right.DeviceID || left.SafetyZone != right.SafetyZone {
 				continue
 			}
+			// Two devices share a safety zone only when that zone is named. An empty
+			// zone means the device has no assigned collision region, so it must never
+			// be flagged for colliding with another unzoned device.
+			if left.SafetyZone == "" {
+				continue
+			}
 			start, end, overlaps := OverlapWindow(left.StartMS, left.EndMS, right.StartMS, right.EndMS)
 			if overlaps {
 				windows = append(windows, CollisionWindow{SafetyZone: left.SafetyZone, CueCodes: []string{left.CueCode, right.CueCode}, DeviceIDs: []uint{left.DeviceID, right.DeviceID}, DeviceCodes: []string{left.DeviceCode, right.DeviceCode}, StartMS: start, EndMS: end})

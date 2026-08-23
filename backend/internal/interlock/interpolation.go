@@ -33,7 +33,9 @@ func OverlapWindow(leftStart, leftEnd, rightStart, rightEnd int64) (int64, int64
 	if rightEnd < end {
 		end = rightEnd
 	}
-	return start, end, start <= end
+	// Intervals are half-open: an action ending exactly when another begins does not
+	// overlap, so a degenerate window (start == end) must not count as a collision.
+	return start, end, start < end
 }
 
 func MinimumPosition(event TimelineEvent) float64 {

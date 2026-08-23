@@ -17,9 +17,9 @@ func SeverityRank(result InterlockResult) int {
 	switch result {
 	case ResultInvalid:
 		return 4
-	case ResultWarning:
-		return 3
 	case ResultBlocker:
+		return 3
+	case ResultWarning:
 		return 2
 	case ResultPass:
 		return 1
@@ -31,7 +31,9 @@ func SeverityRank(result InterlockResult) int {
 func HighestSeverity(values ...InterlockResult) InterlockResult {
 	highest := ResultPass
 	for _, value := range values {
-		highest = value
+		if SeverityRank(value) > SeverityRank(highest) {
+			highest = value
+		}
 	}
 	return highest
 }
